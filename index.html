@@ -6,6 +6,57 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <title>English Practice Test – Bài 8</title>
     <style>
+      @keyframes shake {
+        0% {
+          transform: translate(1px, 1px) rotate(0deg);
+        }
+        10% {
+          transform: translate(-1px, -2px) rotate(-1deg);
+        }
+        20% {
+          transform: translate(-3px, 0px) rotate(1deg);
+        }
+        30% {
+          transform: translate(3px, 2px) rotate(0deg);
+        }
+        40% {
+          transform: translate(1px, -1px) rotate(1deg);
+        }
+        50% {
+          transform: translate(-1px, 2px) rotate(-1deg);
+        }
+        60% {
+          transform: translate(-3px, 1px) rotate(0deg);
+        }
+        70% {
+          transform: translate(3px, 1px) rotate(-1deg);
+        }
+        80% {
+          transform: translate(-1px, -1px) rotate(1deg);
+        }
+        90% {
+          transform: translate(1px, 2px) rotate(0deg);
+        }
+        100% {
+          transform: translate(1px, -2px) rotate(-1deg);
+        }
+      }
+
+      #devtools-blocker {
+        position: fixed;
+        inset: 0;
+        background: white;
+        z-index: 999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+        font-weight: bold;
+        color: red;
+        animation: shake 0.5s infinite;
+        flex-direction: column;
+        text-align: center;
+      }
       #completion-popup {
         position: fixed;
         top: 0;
@@ -143,6 +194,12 @@
         background: #f4f4f4;
         margin: 0;
         padding: 20px;
+
+        /* Ngăn chọn văn bản */
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
       }
       .container {
         background: #fff;
@@ -776,7 +833,6 @@
     <div class="result" id="result-III"></div>
     <button onclick="resetPart('q11', 5, 'result-III')">Reset Part III</button>
     <!-- PART IV -->
-    <
     <h3>IV. Fill in the blank (TWO or THREE words from the text)</h3>
     <div id="part-IV">
       <div class="question-block" data-correct="sheet of ice">
@@ -888,80 +944,88 @@
     <button onclick="resetPart('q16', 5, 'result-IV')">Reset Part IV</button>
     <!-- PART V -->
     <h3>V. Complete the prediction with THREE to FOUR WORDS.</h3>
-    <div class="passage">
-      <p>
-        The temperature in the center of the earth is 75000 degrees Celsius.
-      </p>
-    </div>
-    <div
-      class="question-block"
-      data-correct="what's the temperature of|how hot is"
-    >
-      <p>21. .............the center of the earth?</p>
-      <input
-        name="q21"
-        placeholder="Your answer here"
-        style="width: 90%; margin: 10px 20px; padding: 6px"
-        type="text"
-        autocomplete="off"
-      />
-    </div>
-    <div class="passage">
-      <p>The lake is 12 metres in depth.</p>
-    </div>
-    <div
+    <div id="part-V">
       <div
-      class="question-block"
-      data-correct="what's the depth of|how deep is"
-    >
-      <p>22. .............. the lake?</p>
-      <input
-        name="q22"
-        placeholder="Your answer here"
-        style="width: 90%; margin: 10px 20px; padding: 6px"
-        type="text"
-        autocomplete="off"
-      />
+        class="question-block"
+        data-correct="what's the temperature of|how hot is"
+      >
+        <div class="passage">
+          <p>
+            The temperature in the center of the earth is 75000 degrees Celsius.
+          </p>
+        </div>
+        <p>21. .............the center of the earth?</p>
+        <input
+          name="q21"
+          placeholder="Your answer here"
+          style="width: 90%; margin: 10px 20px; padding: 6px"
+          type="text"
+          autocomplete="off"
+        />
+      </div>
+
+      <div
+        class="question-block"
+        data-correct="what's the depth of|how deep is"
+      >
+        <div class="passage">
+          <p>The lake is 12 metres in depth.</p>
+        </div>
+        <p>22. .............. the lake?</p>
+        <input
+          name="q22"
+          placeholder="Your answer here"
+          style="width: 90%; margin: 10px 20px; padding: 6px"
+          type="text"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="question-block" data-correct="how far is">
+        <div class="passage">
+          <p>The North Pole is over 20,000 kilometres from the South Pole.</p>
+        </div>
+        <p>23. ............ the North Pole from the South Pole?</p>
+        <input
+          name="q23"
+          placeholder="Your answer here"
+          style="width: 90%; margin: 10px 20px; padding: 6px"
+          type="text"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="question-block" data-correct="how many litres">
+        <div class="passage">
+          <p>
+            Every day, 914,000,000,000,000 litres of rain falls on the Earth.
+          </p>
+        </div>
+        <p>24. : ......... of rain fall on the Earth every day?</p>
+        <input
+          name="q24"
+          placeholder="Your answer here"
+          style="width: 90%; margin: 10px 20px; padding: 6px"
+          type="text"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="question-block" data-correct="how long will it">
+        <div class="passage">
+          <p>It will take humans 766,000 years to travel to Gliese 581g.</p>
+        </div>
+        <p>25. .............. take humans to travel to Gliese 581g?</p>
+        <input
+          name="q25"
+          placeholder="Your answer here"
+          style="width: 90%; margin: 10px 20px; padding: 6px"
+          type="text"
+          autocomplete="off"
+        />
+      </div>
     </div>
-    <div class="passage">
-      <p>The North Pole is over 20,000 kilometres from the South Pole.</p>
-    </div>
-    <div <div class="question-block" data-correct="how far is">
-      <p>23. ............ the North Pole from the South Pole?</p>
-      <input
-        name="q23"
-        placeholder="Your answer here"
-        style="width: 90%; margin: 10px 20px; padding: 6px"
-        type="text"
-        autocomplete="off"
-      />
-    </div>
-    <div class="passage">
-      <p>Every day, 914,000,000,000,000 litres of rain falls on the Earth.</p>
-    </div>
-    <div <div class="question-block" data-correct="how many litres">
-      <p>24. : ......... of rain fall on the Earth every day?</p>
-      <input
-        name="q24"
-        placeholder="Your answer here"
-        style="width: 90%; margin: 10px 20px; padding: 6px"
-        type="text"
-        autocomplete="off"
-      />
-    </div>
-    <div class="passage">
-      <p>It will take humans 766,000 years to travel to Gliese 581g.</p>
-    </div>
-    <div <div class="question-block" data-correct="how long will it">
-      <p>25. .............. take humans to travel to Gliese 581g?</p>
-      <input
-        name="q25"
-        placeholder="Your answer here"
-        style="width: 90%; margin: 10px 20px; padding: 6px"
-        type="text"
-        autocomplete="off"
-      />
-    </div>
+
     <button onclick="submitTextAnswers(21, 5, 'result-V')">
       Submit Part V
     </button>
@@ -2050,6 +2114,53 @@
           });
         });
       }
+    </script>
+    <script>
+      // Chặn copy và chuột phải
+      document.addEventListener("copy", function (e) {
+        e.preventDefault();
+        alert("⚠️ Copy is disabled.");
+      });
+
+      document.addEventListener("contextmenu", function (e) {
+        e.preventDefault();
+      });
+
+      document.addEventListener("selectstart", function (e) {
+        e.preventDefault();
+      });
+    </script>
+    <script>
+      let devtoolsOpen = false;
+
+      setInterval(() => {
+        const threshold = 160;
+        const isOpen =
+          window.outerWidth - window.innerWidth > threshold ||
+          window.outerHeight - window.innerHeight > threshold;
+
+        if (isOpen && !devtoolsOpen) {
+          devtoolsOpen = true;
+
+          // Clear current page
+          document.body.innerHTML = "";
+
+          // Add overlay blocker
+          const blocker = document.createElement("div");
+          blocker.id = "devtools-blocker";
+          blocker.innerHTML = `
+        🚨 <br/> DEVTOOLS DETECTED <br/>
+        <small style="font-size: 16px; color: #555">Code em lỏ mà ăn cắp source hay xem đáp án chi vậy bro</small>
+      `;
+          document.body.appendChild(blocker);
+
+          // Play error sound
+          const audio = new Audio(
+            "https://www.myinstants.com/media/sounds/windows-error.mp3"
+          );
+          audio.play().catch(() => {});
+        }
+      }, 1000);
     </script>
   </body>
 </html>
