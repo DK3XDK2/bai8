@@ -661,7 +661,7 @@
       <div class="option">
         <label
           ><input name="q13" type="radio" value="B" /> They want to find more
-          planets around the sun. as now.
+          planets around the sun.
         </label>
       </div>
       <div class="option">
@@ -1864,33 +1864,40 @@
     </script>
     <script>
       let countdownInterval;
-      let challengeCompleted = false;
+      let isChallengeStarted = false;
 
       function startOneMinuteChallenge() {
+        if (isChallengeStarted) {
+          alert("⏱ Bạn đã bắt đầu thử thách rồi!");
+          return;
+        }
+
         if (
           confirm(
-            "⏱ Bạn có 120 giây để hoàn thành bài thi. Bạn đã sẵn sàng chưa?"
+            "⏱ Bạn có 60 giây để hoàn thành bài thi. Bạn đã sẵn sàng chưa?"
           )
         ) {
+          isChallengeStarted = true;
+
+          // ✅ Vô hiệu hóa nút sau khi bắt đầu thử thách
+          document.querySelector(
+            "button[onclick='startOneMinuteChallenge()']"
+          ).disabled = true;
+
           alert("💨 Bắt đầu đếm ngược 2 phút... Chúc bạn may mắn!");
+
           const timerEl = document.getElementById("countdown-timer");
           const duration = 120 * 1000;
           const endTime = Date.now() + duration;
 
           clearInterval(countdownInterval);
-          timerEl.style.display = "block";
 
           countdownInterval = setInterval(() => {
             const remaining = endTime - Date.now();
 
-            if (challengeCompleted) {
-              clearInterval(countdownInterval);
-              return;
-            }
-
             if (remaining <= 0) {
               clearInterval(countdownInterval);
-              timerEl.textContent = "";
+              timerEl.textContent = "⏳ Thời gian còn lại: 0.000s";
               timerEl.style.display = "none";
               alert("⏰ Hết giờ! Trang sẽ được reset lại.");
               location.reload();
