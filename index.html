@@ -336,7 +336,7 @@
         onclick="startOneMinuteChallenge()"
         style="margin: 12px 0; padding: 8px 16px"
       >
-        🕐 Thử sức trong 2 phút
+        🕐 Thử sức trong 5 phút
       </button>
 
       <!-- PART I -->
@@ -1884,10 +1884,10 @@
             "button[onclick='startOneMinuteChallenge()']"
           ).disabled = true;
 
-          alert("💨 Bắt đầu đếm ngược 2 phút... Chúc bạn may mắn!");
+          alert("💨 Bắt đầu đếm ngược 5 phút... Chúc bạn may mắn!");
 
           const timerEl = document.getElementById("countdown-timer");
-          const duration = 120 * 1000;
+          const duration = 300 * 1000;
           const endTime = Date.now() + duration;
 
           clearInterval(countdownInterval);
