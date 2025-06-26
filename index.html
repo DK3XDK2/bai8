@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>English Practice Test – Bài 8</title>
+    <style>
+      #completion-popup {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+
+      .popup-content {
+        background: white;
+        padding: 24px 32px;
+        border-radius: 12px;
+        text-align: center;
+        max-width: 400px;
+        box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
+      }
+
+      .popup-content h2 {
+        margin-bottom: 12px;
+        color: #2e7d32;
+      }
+
+      .popup-content button {
+        padding: 8px 16px;
+        margin-top: 12px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+
+      .popup-content button:hover {
+        background-color: #388e3c;
+      }
+
+      #countdown-timer:empty {
+        display: none;
+      }
+      #popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #popup-box {
+        background: white;
+        padding: 20px 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        width: 90%;
+        max-width: 400px;
+        font-family: Arial, sans-serif;
+      }
+
+      body.popup-active *:not(#popup-overlay):not(#popup-overlay *) {
+        pointer-events: none;
+        user-select: none;
+      }
+      body.popup-active {
+        overflow: hidden; /* Ngăn cuộn */
+      }
+
+      .word-bank,
+      .drop-area {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 12px;
+        padding: 10px;
+        border: 1px dashed #aaa;
+        min-height: 50px;
+        background-color: #f9f9f9;
+      }
+
+      .word-bank span,
+      .drop-area span {
+        background-color: #e0f7fa;
+        padding: 6px 10px;
+        border-radius: 4px;
+        cursor: move;
+        user-select: none;
+      }
+
+      .drop-area span {
+        background-color: #d1c4e9;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f4f4;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        background: #fff;
+        max-width: 950px;
+        margin: auto;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2,
+      h3 {
+        text-align: center;
+      }
+      h3 {
+        margin-top: 40px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 5px;
+      }
+      .question-block {
+        margin-bottom: 25px;
+        border: 1px solid #ccc;
+        border-left: 5px solid #007bff;
+        padding: 15px;
+        border-radius: 5px;
+        background: #fafafa;
+      }
+      .question-block p {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      .option {
+        padding: 8px 0;
+        margin-left: 20px;
+      }
+      .option input[type="radio"] {
+        margin-right: 8px;
+      }
+      button {
+        display: block;
+        margin: 30px auto 10px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+      }
+      .result {
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 40px;
+      }
+      .sentence-sort {
+        margin-bottom: 30px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+      .sortable {
+        list-style-type: none;
+        padding: 0;
+        margin: 10px 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .sortable li {
+        padding: 6px 12px;
+        background-color: #e0e0e0;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        cursor: move;
+      }
+      .result {
+        margin-top: 15px;
+        font-weight: bold;
+      }
+      .reading-passage {
+        background-color: #f0f8ff;
+        border: 1px solid #007acc;
+        padding: 16px;
+        margin: 24px 0 12px 0;
+        border-radius: 8px;
+        font-style: normal;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #003366;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .reading-passage::before {
+        content: "📘 Reading passage:";
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #005599;
+      }
+      .passage {
+        background-color: #fff9e6;
+        border: 1px solid #ffc107;
+        padding: 16px;
+        margin: 24px 0 12px 0;
+        border-radius: 8px;
+        font-style: normal;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: #5a4300;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.04);
+      }
+
+      .passage::before {
+        content: "📖 Read this text:";
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #cc8400;
+      }
+      .shufflable {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 12px;
+        background-color: #f8f9fa;
+        border: 1px dashed #aaa;
+        border-radius: 8px;
+        font-style: normal;
+        margin-bottom: 16px;
+      }
+
+      .shufflable span {
+        display: inline-block;
+        background-color: #e7f1ff;
+        color: #003366;
+        padding: 6px 10px;
+        border: 1px solid #99c;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-family: "Segoe UI", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="completion-popup" style="display: none">
+      <div class="popup-content">
+        <h2>🎉 Bạn đã hoàn thành bài thi!</h2>
+        <p>Chúc mừng bạn đã trả lời đúng tất cả câu hỏi.</p>
+        <button onclick="closeCompletionPopup()">Đóng</button>
+      </div>
+    </div>
+    <!-- Popup Overlay -->
+    <div id="popup-overlay" style="display: none">
+      <div id="popup-box">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <strong>🔔 Thông báo</strong>
+          <button
+            onclick="closePopup()"
+            style="
+              border: none;
+              background: transparent;
+              font-size: 20px;
+              cursor: pointer;
+            "
+          >
+            ×
+          </button>
+        </div>
+        <p>
+          <b style="color: teal"
+            >Trang web hiện vẫn đang trong quá trình hoàn thiện và ko dùng trên
+            đth, có thể còn một số lỗi hoặc hiển thị chưa chính xác.</b
+          >
+        </p>
+        <p>
+          <b style="color: teal"
+            >Mong mọi người thông cảm! Nếu cần hỗ trợ, vui lòng liên hệ:</b
+          >
+          <b style="color: #c0392b">https://www.facebook.com/vu.q.huy.795955</b>
+        </p>
+        <button
+          onclick="closeFor2Hours()"
+          style="
+            margin-top: 10px;
+            background: #c0392b;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+          "
+        >
+          Không hiển thị lại trong 2 giờ
+        </button>
+      </div>
+    </div>
+    <div class="container">
+      <h2>English Practice Test – Bài 8</h2>
+      <div
+        id="countdown-timer"
+        style="
+          position: fixed;
+          top: 16px;
+          right: 16px;
+          background: #fff3cd;
+          border: 2px solid #ffa726;
+          padding: 8px 12px;
+          font-weight: bold;
+          font-size: 16px;
+          color: #d84315;
+          border-radius: 8px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          z-index: 9999;
+        "
+      ></div>
+      <button
+        onclick="startOneMinuteChallenge()"
+        style="margin: 12px 0; padding: 8px 16px"
+      >
+        🕐 Thử sức trong 2 phút
+      </button>
+
+      <!-- PART I -->
+      <h3>I. Choose the correct English translation</h3>
+      <div id="part-I">
+        <div class="question-block" data-correct="B">
+          <p>1. Malta là một hòn đảo xinh đẹp ở biển Địa Trung Hải.</p>
+          <div class="option">
+            <label
+              ><input name="q1" type="radio" value="A" /> Malta is a beautiful
+              island in the Mediterranean Ocean.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q1" type="radio" value="B" /> Malta is a beautiful
+              island in the Mediterranean Sea.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q1" type="radio" value="C" /> Malta is a beautiful
+              forest in the Mediterranean Sea.</label
+            >
+          </div>
+        </div>
+        <div class="question-block" data-correct="A">
+          <p>2. Núi Dinpernalason nằm ở phía đông của dãy núi Himalaya.</p>
+          <div class="option">
+            <label
+              ><input name="q2" type="radio" value="A" /> Mount Dinpernalason is
+              in the east of the Himalayan mountains.</label
+            >
+          </div>
+          <div class="option">
+            <label
+              ><input name="q2" type="radio" value="B" /> Mountains
+              Dinpernalason is in the east of Himalayan mountain.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q2" type="radio" value="C" /> Mount Dinpernalason is
+              in the west of Himalayan island.</label
+            >
+          </div>
+        </div>
+        <div class="question-block" data-correct="A">
+          <p>
+            3. Sa mạc Gobi bao phủ phần lớn miền nam Mông Cổ và miền bắc Trung
+            Quốc.
+          </p>
+          <div class="option">
+            <label
+              ><input name="q3" type="radio" value="A" /> The Gobi desert covers
+              large parts of southern Mongolia and northern China.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q3" type="radio" value="B" /> The Gobi desert covers
+              large oceans of southern Mongolia and northern China.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q3" type="radio" value="C" />The Gobi sea covers
+              large parts of southern Mongolia and northern China.</label
+            >
+          </div>
+        </div>
+        <div class="question-block" data-correct="C">
+          <p>4. Everest là ngọn núi cao nhất trên thế giới.</p>
+          <div class="option">
+            <label
+              ><input name="q4" type="radio" value="A" /> Everest is the highest
+              island in the world.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q4" type="radio" value="B" /> Everest is the highest
+              forest in the world.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q4" type="radio" value="C" /> Everest is the highest
+              mountain in the world.</label
+            >
+          </div>
+        </div>
+        <div class="question-block" data-correct="C">
+          <p>5. Sông Hằng dài 2525 kms và chạy từ Ấn Độ qua Bangladesh.</p>
+          <div class="option">
+            <label
+              ><input name="q5" type="radio" value="A" /> The pond Ganges is
+              2,525 km long and goes from India to Bangladesh.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q5" type="radio" value="B" /> The lake Ganges is
+              2,525 km long and goes from India to Bangladesh.
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q5" type="radio" value="C" /> The river Ganges is
+              2,525 km long and goes from India to Bangladesh.</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <button onclick="submitAnswers('q1', 5, 'result-I')">
+        Submit Part I
+      </button>
+      <div class="result" id="result-I"></div>
+      <button onclick="resetPart('q1', 5, 'result-I')">Reset Part I</button>
+      <!-- PART II -->
+      <h3>II. Choose the best option A, B or C to complete the sentences</h3>
+      <div id="part-II">
+        <div class="question-block" data-correct="B">
+          <p>
+            6. : ..............is a country in Europe. It is made up
+            of..............Ireland. " Scotland, Wales, and Northern
+          </p>
+          <div class="option">
+            <label
+              ><input name="q6" type="radio" value="A" /> The United Kingdom /
+              the England</label
+            >
+          </div>
+          <div class="option">
+            <label
+              ><input name="q6" type="radio" value="B" /> The United Kingdom /
+              England</label
+            >
+          </div>
+          <div class="option">
+            <label
+              ><input name="q6" type="radio" value="C" /> United Kingdom / the
+              England</label
+            >
+          </div>
+        </div>
+        <div class="question-block" data-correct="B">
+          <p>
+            7. ........is the deepest fresh-water lake in the world. It is
+            located in...........
+          </p>
+          <div class="option">
+            <label
+              ><input name="q7" type="radio" value="A" /> The Baikal / the
+              Russia</label
+            >
+          </div>
+          <div class="option">
+            <label
+              ><input name="q7" type="radio" value="B" /> Baikal / Russia</label
+            >
+          </div>
+          <div class="option">
+            <label
+              ><input name="q7" type="radio" value="C" /> The Baikal / Russia
+            </label>
+          </div>
+        </div>
+        <div class="question-block" data-correct="B">
+          <p>
+            8. : .........is the highest mountain in the world. It is in
+            .............mountains.
+          </p>
+          <div class="option">
+            <label
+              ><input name="q8" type="radio" value="A" /> Everest /
+              Himalayan</label
+            >
+          </div>
+          <div class="option">
+            <label
+              ><input name="q8" type="radio" value="B" /> Everest / the
+              Himalayan</label
+            >
+          </div>
+          <div class="option">
+            <label
+              ><input name="q8" type="radio" value="C" /> The Everest / the
+              Himalayan</label
+            >
+          </div>
+        </div>
+        <div class="question-block" data-correct="B">
+          <p>9. : .........is the largest hot desert in..............</p>
+          <div class="option">
+            <label
+              ><input name="q9" type="radio" value="A" /> Sahara / the world
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q9" type="radio" value="B" /> The Sahara / the world
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q9" type="radio" value="C" /> The Sahara /
+              world</label
+            >
+          </div>
+        </div>
+        <div class="question-block" data-correct="A">
+          <p>10. : ............is in England. It flows through............</p>
+          <div class="option">
+            <label
+              ><input name="q10" type="radio" value="A" /> The River Thames /
+              London
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q10" type="radio" value="B" /> The River Thames /
+              the London
+            </label>
+          </div>
+          <div class="option">
+            <label
+              ><input name="q10" type="radio" value="C" /> River Thames /
+              London</label
+            >
+          </div>
+        </div>
+      </div>
+
+      <button onclick="submitAnswers('q6', 5, 'result-II')">
+        Submit Part II
+      </button>
+      <div class="result" id="result-II"></div>
+      <button onclick="resetPart('q6', 5, 'result-II')">Reset Part II</button>
+    </div>
+    <!-- PART III -->
+    <h3>III. Reading comprehension</h3>
+    <!-- Passage 1 -->
+    <div class="reading-passage">
+      <p>
+        If you're an explorer who's looking for new places to explore, here is
+        an unexplored place. Lake Vostok in Antarctica is 14,000 square
+        kilometres and freezing cold. Unfortunately, it's been under a sheet of
+        ice for 15 million years. The ice is 3.7 kilometres deep so it's
+        impossible to get to, though scientists have taken water from it.
+      </p>
+    </div>
+    <div class="question-block" data-correct="C">
+      <p>11. Why can't we get into Lake Vostok?</p>
+      <div class="option">
+        <label
+          ><input name="q11" type="radio" value="A" /> Because it is 14,000
+          square kilometres and freezing cold.
+        </label>
+      </div>
+      <div class="option">
+        <label
+          ><input name="q11" type="radio" value="B" /> Because it is in
+          Antarctica.
+        </label>
+      </div>
+      <div class="option">
+        <label
+          ><input name="q11" type="radio" value="C" /> Because it is under a
+          thick layer of ice.</label
+        >
+      </div>
+    </div>
+    <!-- Passage 2 -->
+    <div class="reading-passage">
+      <p>
+        There are lots of mountains in the world that nobody has climbed yet.
+        For example, there's Mount Dinpernalason in the east of the Himalayan
+        mountains in Asia. Or you could explore the Merume Mountains in Guyana
+        in South America. But they are at the end of the 500-kilometre-long
+        Mazaruni river - it's one of the most dangerous rivers in the world.
+      </p>
+    </div>
+    <div class="question-block" data-correct="C">
+      <p>12. What stands next to a dangerous river?</p>
+      <div class="option">
+        <label
+          ><input name="q12" type="radio" value="A" /> Mount Dinpernalason
+        </label>
+      </div>
+      <div class="option">
+        <label
+          ><input name="q12" type="radio" value="B" /> the Himalayan mountains
+        </label>
+      </div>
+      <div class="option">
+        <label
+          ><input name="q12" type="radio" value="C" /> the Merume
+          Mountains</label
+        >
+      </div>
+    </div>
+    <!-- Passage 3 -->
+    <div class="reading-passage">
+      <p>
+        For thousands of years, humans explored the Earth. Now astronomers are
+        exploring space, looking for new planets or a new Earth for humans to
+        live on in the future. First of all, astronomers look for a star. That's
+        because our Earth orbits a star (the sun). When astronomers have found a
+        star, they look for planets around it.
+      </p>
+    </div>
+    <div class="question-block" data-correct="A">
+      <p>13. Why are astronomers exploring space?</p>
+      <div class="option">
+        <label
+          ><input name="q13" type="radio" value="A" /> They want to find a
+          future place for us to live.
+        </label>
+      </div>
+      <div class="option">
+        <label
+          ><input name="q13" type="radio" value="B" /> They want to find more
+          planets around the sun. as now.
+        </label>
+      </div>
+      <div class="option">
+        <label
+          ><input name="q13" type="radio" value="C" /> They want to find a new
+          sun for our solar system.</label
+        >
+      </div>
+    </div>
+    <!-- Passage 4 -->
+    <div class="reading-passage">
+      <p>
+        To find a new Earth, first, astronomers look for a star. Then, they look
+        for planets around it. Once they find a new planet, it's also important
+        to measure the distance between the planet and the sun. That's because
+        most planets (unlike our Earth) are either too near to the star or too
+        far away.
+      </p>
+    </div>
+    <div class="question-block" data-correct="B">
+      <p>14. In what way is the Earth different from most planets?</p>
+      <div class="option">
+        <label
+          ><input name="q14" type="radio" value="A" /> It goes around a star.
+        </label>
+      </div>
+      <div class="option">
+        <label
+          ><input name="q14" type="radio" value="B" /> It's at a good distance
+          from its sun.
+        </label>
+      </div>
+      <div class="option">
+        <label
+          ><input name="q14" type="radio" value="C" /> It's nearer to the
+          sun.</label
+        >
+      </div>
+    </div>
+    <!-- //Passage 5// -->
+    <div class="reading-passage">
+      <p>
+        When astronomers find a planet in a good position, astronomers look for
+        three things: water, air and rock. Water is important because if humans
+        go there, they will need water to drink and to grow plants. If you can
+        grow plants, then the plants can produce air for humans to breathe.
+        Finally, astronomers also look for rocks, because water is often under
+        the rocks.
+      </p>
+    </div>
+    <div class="question-block" data-correct="B">
+      <p>15. What is one of the things astronomers look for on a new planet?</p>
+      <div class="option">
+        <label><input name="q15" type="radio" value="A" /> Plants </label>
+      </div>
+      <div class="option">
+        <label><input name="q15" type="radio" value="B" /> Water </label>
+      </div>
+      <div class="option">
+        <label><input name="q15" type="radio" value="C" /> Drink</label>
+      </div>
+    </div>
+    <button onclick="submitAnswers('q11', 5, 'result-III')">
+      Submit Part III
+    </button>
+    <div class="result" id="result-III"></div>
+    <button onclick="resetPart('q11', 5, 'result-III')">Reset Part III</button>
+    <!-- PART IV -->
+    <h3>IV. Fill in the blank (TWO or THREE words from the text)</h3>
+    <div class="passage">
+      Lake Vostok in Antarctica is 14,000 square kilometres and freezing cold.
+      Unfortunately, it's been under a sheet of ice for 15 million years. The
+      ice is 3.7 kilometres deep so it's impossible to get to, though scientists
+      have taken water from it.
+    </div>
+    <div class="question-block" data-correct="sheet of ice">
+      <p>
+        16.Lake Vostok in Antarctica is 14,000 square kilometres and freezing
+        cold with a 3.7 kilometre-thick...............on it.
+      </p>
+      <input
+        name="q16"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <div class="passage">
+      The Merume Mountains is in Guyana in South America. But they are at the
+      end of the Mazaruni river, so that's one for someone who also likes boats
+      and maybe swimming - it's one of the most dangerous rivers in the world.
+    </div>
+    <div class="question-block" data-correct="mazaruni river">
+      <p>
+        17. The Merume Mountains in Guyana are at the end of the
+        dangerous.......
+      </p>
+      <input
+        name="q17"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <div class="passage">
+      Astronomers are exploring space, looking for new planets or a new Earth
+      for humans to live on in the future. First of all, astronomers look for a
+      star. That's because our Earth orbits a star (the sun). When astronomers
+      have found a star, they look for planets around it.
+    </div>
+    <div class="question-block" data-correct="looking for planets">
+      <p>
+        18. Astronomers are looking for a new Earth by first looking for a star,
+        then.........around it.
+      </p>
+      <input
+        name="q18"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <div class="passage">
+      The Amazon rainforest is not as quiet as it used to be. Every year, more
+      people visit. Some come to see wildlife, while others come to cut down
+      trees for farming. This is bad for the plants and animals living there.
+    </div>
+    <div class="question-block" data-correct="see wildlife">
+      <p>
+        19. The Amazon rainforest is not as quiet as before because people come
+        there to........... or cut down trees for farming.
+      </p>
+      <input
+        name="q19"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <div class="passage">
+      To find a new Earth, first, astronomers look for a star. Then, they look
+      for planets around it. Once they find a new planet, it's also important to
+      measure the distance between the planet and the sun. That's because most
+      planets (unlike our Earth) are either too near to the star or too far
+      away.
+    </div>
+    <div class="question-block" data-correct="measure the distance">
+      <p>
+        20. To find a new Earth, astronomers look for a star and planets around
+        it. Then they.............from the planets to the sun.
+      </p>
+      <input
+        name="q20"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <button onclick="submitTextAnswers(16, 5, 'result-IV')">
+      Submit Part IV
+    </button>
+    <div class="result" id="result-IV"></div>
+    <button onclick="resetPart('q16', 5, 'result-IV')">Reset Part IV</button>
+    <!-- PART V -->
+    <h3>V. Complete the prediction with THREE to FOUR WORDS.</h3>
+    <div class="passage">
+      <p>
+        The temperature in the center of the earth is 75000 degrees Celsius.
+      </p>
+    </div>
+    <div
+      class="question-block"
+      data-correct="what's the temperature of|how hot is"
+    >
+      <p>21. .............the center of the earth?</p>
+      <input
+        name="q21"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <div class="passage">
+      <p>The lake is 12 metres in depth.</p>
+    </div>
+    <div
+      <div
+      class="question-block"
+      data-correct="what's the depth of|how deep is"
+    >
+      <p>22. .............. the lake?</p>
+      <input
+        name="q22"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <div class="passage">
+      <p>The North Pole is over 20,000 kilometres from the South Pole.</p>
+    </div>
+    <div <div class="question-block" data-correct="how far is">
+      <p>23. ............ the North Pole from the South Pole?</p>
+      <input
+        name="q23"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <div class="passage">
+      <p>Every day, 914,000,000,000,000 litres of rain falls on the Earth.</p>
+    </div>
+    <div <div class="question-block" data-correct="how many litres">
+      <p>24. : ......... of rain fall on the Earth every day?</p>
+      <input
+        name="q24"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <div class="passage">
+      <p>It will take humans 766,000 years to travel to Gliese 581g.</p>
+    </div>
+    <div <div class="question-block" data-correct="how long will it">
+      <p>25. .............. take humans to travel to Gliese 581g?</p>
+      <input
+        name="q25"
+        placeholder="Your answer here"
+        style="width: 90%; margin: 10px 20px; padding: 6px"
+        type="text"
+      />
+    </div>
+    <button onclick="submitTextAnswers(21, 5, 'result-V')">
+      Submit Part V
+    </button>
+    <div class="result" id="result-V"></div>
+    <button onclick="resetPart('q21', 5, 'result-V')">Reset Part V</button>
+    <!-- PART VI -->
+    <!-- PART VI -->
+    <h3>VI. Sentence ordering</h3>
+    <div class="sentence-ordering" id="part-vi">
+      <!-- Question 14 -->
+      <div
+        class="sentence-question"
+        data-answer="How long did it take James Cameron to travel to the Mariana Trench?"
+        data-group="q26"
+      >
+        <p>26. Put the words in the correct order:</p>
+        <p>
+          <em class="shufflable"
+            >How /take James Cameron /to travel /Mariana Trench? /did it /to the
+            /long</em
+          >
+        </p>
+
+        <div
+          class="drop-area"
+          ondragover="allowDrop(event)"
+          ondrop="drop(event)"
+        ></div>
+
+        <div class="word-bank" data-group="q26">
+          <span
+            draggable="true"
+            id="phrase_0_0"
+            data-group="q26"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >How</span
+          >
+          <span
+            draggable="true"
+            id="phrase_0_1"
+            data-group="q26"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >take James Cameron</span
+          >
+          <span
+            draggable="true"
+            id="phrase_0_2"
+            data-group="q26"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >to travel</span
+          >
+          <span
+            draggable="true"
+            id="phrase_0_3"
+            data-group="q26"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >Mariana Trench?</span
+          >
+          <span
+            draggable="true"
+            id="phrase_0_4"
+            data-group="q26"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >did it</span
+          >
+          <span
+            draggable="true"
+            id="phrase_0_5"
+            data-group="q26"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >to the</span
+          >
+          <span
+            draggable="true"
+            id="phrase_0_6"
+            data-group="q26"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >long</span
+          >
+        </div>
+      </div>
+
+      <!-- Question 15 -->
+      <div
+        class="sentence-question"
+        data-answer="Lake Vostok in Antarctica is 14000 square kilometres and freezing cold."
+        data-group="q27"
+      >
+        <p>27. Put the words in the correct order:</p>
+        <p>
+          <em class="shufflable"
+            >Lake Vostok /square kilometres /and freezing /in Antarctica /cold
+            /is 14000</em
+          >
+        </p>
+
+        <div
+          class="drop-area"
+          ondragover="allowDrop(event)"
+          ondrop="drop(event)"
+        ></div>
+
+        <div class="word-bank" data-group="q27">
+          <span
+            draggable="true"
+            id="phrase_1_0"
+            data-group="q27"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >Lake Vostok</span
+          >
+          <span
+            draggable="true"
+            id="phrase_1_1"
+            data-group="q27"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >square kilometres</span
+          >
+          <span
+            draggable="true"
+            id="phrase_1_2"
+            data-group="q27"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >and freezing</span
+          >
+          <span
+            draggable="true"
+            id="phrase_1_3"
+            data-group="q27"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >in Antarctica</span
+          >
+          <span
+            draggable="true"
+            id="phrase_1_4"
+            data-group="q27"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >cold</span
+          >
+          <span
+            draggable="true"
+            id="phrase_1_5"
+            data-group="q27"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >is 14000</span
+          >
+        </div>
+      </div>
+
+      <!-- Question 16 -->
+      <div
+        class="sentence-question"
+        data-answer="How far is it from South Carolina in the USA to Antarctica?"
+        data-group="q28"
+      >
+        <p>28. Put the words in the correct order:</p>
+        <p>
+          <em class="shufflable">
+            is it /South Carolina /far /How /to Antarctica? /in the USA
+            /from</em
+          >
+        </p>
+        <div
+          class="drop-area"
+          ondragover="allowDrop(event)"
+          ondrop="drop(event)"
+        ></div>
+        <div class="word-bank" data-group="q28">
+          <span
+            draggable="true"
+            id="phrase_2_0"
+            data-group="q28"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >is it</span
+          >
+          <span
+            draggable="true"
+            id="phrase_2_1"
+            data-group="q28"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >South Carolina</span
+          >
+          <span
+            draggable="true"
+            id="phrase_2_2"
+            data-group="q28"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >far</span
+          >
+          <span
+            draggable="true"
+            id="phrase_2_3"
+            data-group="q28"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >How</span
+          >
+          <span
+            draggable="true"
+            id="phrase_2_4"
+            data-group="q28"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >to Antarctica?</span
+          >
+          <span
+            draggable="true"
+            id="phrase_2_5"
+            data-group="q28"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >in the USA</span
+          >
+          <span
+            draggable="true"
+            id="phrase_2_6"
+            data-group="q28"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >from</span
+          >
+        </div>
+      </div>
+
+      <!-- Question 17 -->
+      <div
+        class="sentence-question"
+        data-answer="The Mekong River is the longest river in Southeast Asia and flows through Vietnam."
+        data-group="q29"
+      >
+        <p>29. Put the words in the correct order:</p>
+        <p>
+          <em class="shufflable"
+            >and /in Southeast Asia /The /Mekong River is /the longest /flows
+            through Vietnam. /river</em
+          >
+        </p>
+        <div
+          class="drop-area"
+          ondragover="allowDrop(event)"
+          ondrop="drop(event)"
+        ></div>
+        <div class="word-bank" data-group="q29">
+          <span
+            draggable="true"
+            id="phrase_3_0"
+            data-group="q29"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >and</span
+          >
+          <span
+            draggable="true"
+            id="phrase_3_1"
+            data-group="q29"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >in Southeast Asia</span
+          >
+          <span
+            draggable="true"
+            id="phrase_3_2"
+            data-group="q29"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >The</span
+          >
+          <span
+            draggable="true"
+            id="phrase_3_3"
+            data-group="q29"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >Mekong River is</span
+          >
+          <span
+            draggable="true"
+            id="phrase_3_4"
+            data-group="q29"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >the longest</span
+          >
+          <span
+            draggable="true"
+            id="phrase_3_5"
+            data-group="q29"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >flows through Vietnam.</span
+          ><span
+            draggable="true"
+            id="phrase_3_6"
+            data-group="q29"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >river</span
+          >
+        </div>
+      </div>
+
+      <!-- Question 18 -->
+      <div
+        class="sentence-question"
+        data-answer="Are both Mount Everest and Mount Dinpernalason in the Himalayan mountains?"
+        data-group="q30"
+      >
+        <p>30. Put the words in the correct order:</p>
+        <p>
+          <em class="shufflable"
+            >Dinpernalason /in the /Are both /Mount Everest /and Mount
+            /Himalayan mountains?</em
+          >
+        </p>
+        <div
+          class="drop-area"
+          ondragover="allowDrop(event)"
+          ondrop="drop(event)"
+        ></div>
+        <div class="word-bank" data-group="q30">
+          <span
+            draggable="true"
+            id="phrase_3_8"
+            data-group="q30"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >Dinpernalason</span
+          >
+          <span
+            draggable="true"
+            id="phrase_3_9"
+            data-group="q30"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >in the</span
+          >
+          <span
+            draggable="true"
+            id="phrase_4_0"
+            data-group="q30"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >Are both</span
+          >
+          <span
+            draggable="true"
+            id="phrase_4_1"
+            data-group="q30"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >Mount Everest</span
+          >
+          <span
+            draggable="true"
+            id="phrase_4_2"
+            data-group="q30"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >and Mount</span
+          >
+          <span
+            draggable="true"
+            id="phrase_4_3"
+            data-group="q30"
+            ondragstart="drag(event)"
+            ondragend="dragEnd(event)"
+            >Himalayan mountains?</span
+          >
+        </div>
+      </div>
+
+      <!-- Add more questions below if needed -->
+      <button onclick="checkSentenceOrdering()">Submit Part VI</button>
+      <div class="result" id="result-VI"></div>
+      <button onclick="resetSentenceOrdering()">Reset Part VI</button>
+    </div>
+    <script>
+      function submitTextAnswers(containerId, resultId) {
+        const container = document.getElementById(containerId);
+        const questionBlocks = container.querySelectorAll(".question-block");
+        let score = 0;
+        let answeredCount = 0;
+
+        questionBlocks.forEach((block) => {
+          const correctValues = block
+            .getAttribute("data-correct")
+            .toLowerCase()
+            .split("|")
+            .map((v) => v.trim());
+
+          const input = block.querySelector('input[type="text"]');
+          const userAnswer = input.value.trim().toLowerCase();
+
+          const oldHint = block.querySelector(".correct-answer-hint");
+          if (oldHint) oldHint.remove();
+
+          if (userAnswer !== "") {
+            answeredCount++;
+
+            if (correctValues.includes(userAnswer)) {
+              score++;
+              block.style.backgroundColor = "#d4edda";
+              block.style.border = "2px solid #28a745";
+            } else {
+              block.style.backgroundColor = "#f8d7da";
+              block.style.border = "2px solid #dc3545";
+
+              const hint = document.createElement("p");
+              hint.className = "correct-answer-hint";
+              hint.style.color = "#c0392b";
+              hint.style.fontStyle = "italic";
+              hint.style.marginTop = "8px";
+              hint.textContent =
+                "Đáp án đúng là: " + correctValues.join(" hoặc ");
+              block.appendChild(hint);
+            }
+          } else {
+            block.style.backgroundColor = "#fff3cd";
+            block.style.border = "2px dashed #ffc107";
+          }
+        });
+
+        const total = questionBlocks.length;
+        const result = document.getElementById(resultId);
+
+        if (answeredCount < total) {
+          alert("⚠ Vui lòng điền hết tất cả chỗ trống trước khi nộp.");
+          return;
+        }
+
+        if (result) {
+          result.innerText = `You scored ${score}/${total}`;
+          result.style.color = score === total ? "green" : "red";
+        }
+        checkIfAllPartsCompleted();
+      }
+    </script>
+    <script>
+      function allowDrop(ev) {
+        ev.preventDefault();
+      }
+
+      function drag(ev) {
+        ev.dataTransfer.setData("text/plain", ev.target.id);
+        setTimeout(() => {
+          ev.target.style.display = "none";
+        }, 0);
+      }
+
+      function dragEnd(ev) {
+        ev.target.style.display = "inline-block";
+      }
+
+      function drop(ev) {
+        ev.preventDefault();
+        const id = ev.dataTransfer.getData("text/plain");
+        const dragged = document.getElementById(id);
+
+        let target = ev.target;
+        while (
+          target &&
+          !target.classList.contains("drop-area") &&
+          !target.classList.contains("word-bank")
+        ) {
+          target = target.parentElement;
+        }
+
+        if (target && dragged) {
+          const draggedGroup = dragged.getAttribute("data-group");
+          const targetGroup = target
+            .closest(".sentence-question")
+            ?.getAttribute("data-group");
+
+          if (draggedGroup && targetGroup && draggedGroup !== targetGroup) {
+            return; // ❌ không cho kéo sai câu
+          }
+
+          target.appendChild(dragged);
+          dragged.style.display = "inline-block";
+        }
+      }
+    </script>
+    <style>
+      .hidden-dragged {
+        display: none !important;
+      }
+    </style>
+    <script>
+      function normalizeSentence(sentence) {
+        return sentence
+          .toLowerCase()
+          .replace(/[.?!]/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function checkSentenceOrdering() {
+        const questions = document.querySelectorAll(".sentence-question");
+
+        let incomplete = false;
+        for (const q of questions) {
+          const dropArea = q.querySelector(".drop-area");
+          if (!dropArea || dropArea.children.length === 0) {
+            incomplete = true;
+            break;
+          }
+        }
+
+        if (incomplete) {
+          alert("⚠ Vui lòng sắp xếp tất cả câu trước khi nộp!");
+          return;
+        }
+
+        let correctCount = 0;
+        for (const q of questions) {
+          const correct = normalizeSentence(q.getAttribute("data-answer"));
+          const dropArea = q.querySelector(".drop-area");
+          const words = Array.from(dropArea.children).map((el) =>
+            el.textContent.trim()
+          );
+          const userSentence = normalizeSentence(words.join(" "));
+
+          // Xoá đáp án đúng cũ
+          const oldHint = q.querySelector(".correct-sentence-hint");
+          if (oldHint) oldHint.remove();
+
+          if (userSentence === correct) {
+            correctCount++;
+            dropArea.style.backgroundColor = "#d4edda";
+            dropArea.style.border = "2px solid #28a745";
+          } else {
+            dropArea.style.backgroundColor = "#f8d7da";
+            dropArea.style.border = "2px solid #dc3545";
+
+            const hint = document.createElement("p");
+            hint.className = "correct-sentence-hint";
+            hint.style.color = "#c0392b";
+            hint.style.fontStyle = "italic";
+            hint.style.marginTop = "8px";
+            hint.textContent =
+              "Đáp án đúng là: " + q.getAttribute("data-answer");
+            dropArea.insertAdjacentElement("afterend", hint);
+          }
+        }
+
+        const total = questions.length;
+        const result = document.getElementById("result-VI");
+        result.textContent = `Part VI: You got ${correctCount}/${total} correct.`;
+        result.style.color = correctCount === total ? "green" : "red";
+        checkIfAllPartsCompleted();
+      }
+    </script>
+    <script>
+      function resetTextInputs(start, count, resultId) {
+        for (let i = 0; i < count; i++) {
+          const qNum = start + i;
+          const input = document.querySelector('input[name="q' + qNum + '"]');
+          if (input) input.value = "";
+        }
+        const result = document.getElementById(resultId);
+        if (result) result.textContent = "";
+      }
+
+      function submitAnswers(firstName, count, resultId) {
+        let answered = 0;
+        for (let i = 0; i < count; i++) {
+          const name =
+            firstName.slice(0, 1) + (parseInt(firstName.slice(1)) + i);
+          const selected = document.querySelector(
+            'input[name="' + name + '"]:checked'
+          );
+          if (selected) answered++;
+        }
+        if (answered < count) {
+          alert("⚠ Vui lòng trả lời tất cả các câu hỏi trước khi nộp!");
+          return;
+        }
+
+        let score = 0;
+        for (let i = 0; i < count; i++) {
+          const name =
+            firstName.slice(0, 1) + (parseInt(firstName.slice(1)) + i);
+          const input = document.querySelector('input[name="' + name + '"]');
+          if (!input) continue;
+          const block = input.closest(".question-block");
+          const correctValue = block.getAttribute("data-correct");
+          const selected = block.querySelector(
+            'input[name="' + name + '"]:checked'
+          );
+
+          const oldHint = block.querySelector(".correct-answer-hint");
+          if (oldHint) oldHint.remove();
+
+          if (selected && selected.value === correctValue) {
+            score++;
+            block.style.backgroundColor = "#d4edda";
+            block.style.border = "2px solid #28a745";
+          } else {
+            block.style.backgroundColor = "#f8d7da";
+            block.style.border = "2px solid #dc3545";
+
+            const correctInput = block.querySelector(
+              'input[value="' + correctValue + '"]'
+            );
+            const correctText = correctInput.closest("label").innerText.trim();
+
+            const hint = document.createElement("p");
+            hint.className = "correct-answer-hint";
+            hint.style.color = "#c0392b";
+            hint.style.fontStyle = "italic";
+            hint.style.marginTop = "8px";
+            hint.textContent = "Đáp án đúng là: " + correctText;
+            block.appendChild(hint);
+          }
+        }
+
+        const result = document.getElementById(resultId);
+        if (result) {
+          result.innerText = `You scored ${score}/${count}`;
+          result.style.color = score === count ? "green" : "red";
+        }
+        checkIfAllPartsCompleted();
+      }
+
+      function submitTextAnswers(containerId, resultId) {
+        const container = document.getElementById(containerId);
+        const questionBlocks = container.querySelectorAll(".question-block");
+        let score = 0;
+        let answeredCount = 0;
+
+        questionBlocks.forEach((block) => {
+          const correctValues = block
+            .getAttribute("data-correct")
+            .toLowerCase()
+            .split("|")
+            .map((v) => v.trim());
+
+          const input = block.querySelector('input[type="text"]');
+          const userAnswer = input.value.trim().toLowerCase();
+
+          const oldHint = block.querySelector(".correct-answer-hint");
+          if (oldHint) oldHint.remove();
+
+          if (userAnswer !== "") {
+            answeredCount++;
+
+            if (correctValues.includes(userAnswer)) {
+              score++;
+              block.style.backgroundColor = "#d4edda";
+              block.style.border = "2px solid #28a745";
+            } else {
+              block.style.backgroundColor = "#f8d7da";
+              block.style.border = "2px solid #dc3545";
+
+              const hint = document.createElement("p");
+              hint.className = "correct-answer-hint";
+              hint.style.color = "#c0392b";
+              hint.style.fontStyle = "italic";
+              hint.style.marginTop = "8px";
+              hint.textContent =
+                "Đáp án đúng là: " + correctValues.join(" hoặc ");
+              block.appendChild(hint);
+            }
+          } else {
+            block.style.backgroundColor = "#fff3cd";
+            block.style.border = "2px dashed #ffc107";
+          }
+        });
+
+        const total = questionBlocks.length;
+        const result = document.getElementById(resultId);
+
+        if (answeredCount < total) {
+          alert("⚠ Vui lòng điền hết tất cả chỗ trống trước khi nộp.");
+          return;
+        }
+
+        if (result) {
+          result.innerText = `You scored ${score}/${total}`;
+          result.style.color = score === total ? "green" : "red";
+        }
+        checkIfAllPartsCompleted();
+      }
+    </script>
+    <script>
+      function resetSentenceOrdering() {
+        document.querySelectorAll(".sentence-question").forEach((q) => {
+          const wordBank = q.querySelector(".word-bank");
+          const dropArea = q.querySelector(".drop-area");
+          const spans = Array.from(dropArea.children);
+          spans.forEach((span) => wordBank.appendChild(span));
+
+          dropArea.style.backgroundColor = "#f9f9f9";
+          dropArea.style.border = "1px dashed #aaa";
+
+          const oldHint = q.querySelector(".correct-sentence-hint");
+          if (oldHint) oldHint.remove();
+        });
+
+        const result = document.getElementById("result-VI");
+        if (result) result.textContent = "";
+      }
+    </script>
+    <script>
+      function resetPart(firstName, count, resultId) {
+        for (let i = 0; i < count; i++) {
+          const name =
+            firstName.slice(0, 1) + (parseInt(firstName.slice(1)) + i);
+          const inputs = document.querySelectorAll(
+            'input[name="' + name + '"]'
+          );
+          inputs.forEach((input) => (input.checked = false));
+          const block =
+            inputs.length > 0 ? inputs[0].closest(".question-block") : null;
+          if (block) {
+            block.style.backgroundColor = "#fafafa";
+            block.style.border = "1px solid #ccc";
+            block.style.borderLeft = "5px solid #007bff";
+
+            const existingHint = block.querySelector(".correct-answer-hint");
+            if (existingHint) existingHint.remove();
+          }
+        }
+        const result = document.getElementById(resultId);
+        if (result) {
+          result.textContent = "";
+          result.style.color = "";
+        }
+      }
+
+      function submitAnswers(firstName, count, resultId) {
+        let answered = 0;
+        for (let i = 0; i < count; i++) {
+          const name =
+            firstName.slice(0, 1) + (parseInt(firstName.slice(1)) + i);
+          const selected = document.querySelector(
+            'input[name="' + name + '"]:checked'
+          );
+          if (selected) answered++;
+        }
+        if (answered < count) {
+          alert("⚠ Vui lòng trả lời tất cả các câu hỏi trước khi nộp!");
+          return;
+        }
+
+        let score = 0;
+        for (let i = 0; i < count; i++) {
+          const name =
+            firstName.slice(0, 1) + (parseInt(firstName.slice(1)) + i);
+          const input = document.querySelector('input[name="' + name + '"]');
+          if (!input) continue;
+          const block = input.closest(".question-block");
+          const correctValue = block.getAttribute("data-correct");
+          const selected = block.querySelector(
+            'input[name="' + name + '"]:checked'
+          );
+
+          const oldHint = block.querySelector(".correct-answer-hint");
+          if (oldHint) oldHint.remove();
+
+          if (selected && selected.value === correctValue) {
+            score++;
+            block.style.backgroundColor = "#d4edda";
+            block.style.border = "2px solid #28a745";
+          } else {
+            block.style.backgroundColor = "#f8d7da";
+            block.style.border = "2px solid #dc3545";
+
+            const correctInput = block.querySelector(
+              'input[value="' + correctValue + '"]'
+            );
+            const correctText = correctInput.closest("label").innerText.trim();
+
+            const hint = document.createElement("p");
+            hint.className = "correct-answer-hint";
+            hint.style.color = "#c0392b";
+            hint.style.fontStyle = "italic";
+            hint.style.marginTop = "8px";
+            hint.textContent = "Đáp án đúng là: " + correctText;
+            block.appendChild(hint);
+          }
+        }
+
+        const result = document.getElementById(resultId);
+        if (result) {
+          result.innerText = `You scored ${score}/${count}`;
+          result.style.color = score === count ? "green" : "red";
+        }
+        checkIfAllPartsCompleted();
+      }
+
+      function submitTextAnswers(start, count, resultId) {
+        let answered = 0;
+
+        for (let i = 0; i < count; i++) {
+          const qNum = start + i;
+          const input = document.querySelector('input[name="q' + qNum + '"]');
+          if (input && input.value.trim() !== "") answered++;
+        }
+
+        if (answered < count) {
+          alert("⚠ Vui lòng điền tất cả ô trước khi nộp!");
+          return;
+        }
+
+        let score = 0;
+
+        for (let i = 0; i < count; i++) {
+          const qNum = start + i;
+          const input = document.querySelector('input[name="q' + qNum + '"]');
+          const block = input.closest(".question-block");
+
+          const correctValues = block
+            .getAttribute("data-correct")
+            .toLowerCase()
+            .split("|")
+            .map((v) => v.trim());
+
+          const userAnswer = input.value.toLowerCase().trim();
+
+          const oldHint = block.querySelector(".correct-answer-hint");
+          if (oldHint) oldHint.remove();
+
+          if (correctValues.includes(userAnswer)) {
+            score++;
+            block.style.backgroundColor = "#d4edda";
+            block.style.border = "2px solid #28a745";
+          } else {
+            block.style.backgroundColor = "#f8d7da";
+            block.style.border = "2px solid #dc3545";
+
+            const hint = document.createElement("p");
+            hint.className = "correct-answer-hint";
+            hint.style.color = "#c0392b";
+            hint.style.fontStyle = "italic";
+            hint.style.marginTop = "8px";
+            hint.textContent =
+              "Đáp án đúng là: " + correctValues.join(" hoặc ");
+            block.appendChild(hint);
+          }
+        }
+
+        const result = document.getElementById(resultId);
+        if (result) {
+          result.innerText = `You scored ${score}/${count}`;
+          result.style.color = score === count ? "green" : "red";
+        }
+        checkIfAllPartsCompleted();
+      }
+    </script>
+
+    <script>
+      function shuffleQuestions(containerId, itemClass = ".question-block") {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        const items = Array.from(container.querySelectorAll(itemClass));
+        for (let i = items.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          container.appendChild(items[j]);
+        }
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        shuffleQuestions("part-I");
+        shuffleOptionsInQuestions("part-I");
+
+        shuffleQuestions("part-II");
+        shuffleOptionsInQuestions("part-II");
+
+        shuffleQuestions("part-III");
+        shuffleOptionsInQuestions("part-III");
+
+        shuffleQuestions("part-IV");
+        shuffleQuestions("part-V");
+
+        shuffleQuestions("part-VI", ".sentence-question");
+
+        // Shuffle từng word-bank
+        document.querySelectorAll(".word-bank").forEach((bank) => {
+          const spans = Array.from(bank.children);
+          for (let i = spans.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            bank.appendChild(spans[j]);
+          }
+        });
+
+        // Shuffle từng em <em class="shufflable">
+        document.querySelectorAll("em.shufflable").forEach((el) => {
+          const parts = el.textContent
+            .split("/")
+            .map((part) => part.trim())
+            .filter(Boolean);
+
+          for (let i = parts.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [parts[i], parts[j]] = [parts[j], parts[i]];
+          }
+
+          el.innerHTML = parts.join(" / ");
+        });
+
+        // ✅ Gán lại data-group cho từng <span> trong word-bank
+        document.querySelectorAll(".sentence-question").forEach((block) => {
+          const group = block.getAttribute("data-group");
+          const spans = block.querySelectorAll(".word-bank span");
+          spans.forEach((span) => {
+            span.setAttribute("data-group", group);
+          });
+        });
+      });
+    </script>
+    <script>
+      function shuffleOptionsInQuestions(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const questions = container.querySelectorAll(".question-block");
+
+        questions.forEach((q) => {
+          const correctValue = q.getAttribute("data-correct");
+
+          const options = Array.from(q.querySelectorAll(".option"));
+
+          const optionClones = options.map((opt) => {
+            const input = opt.querySelector("input");
+            return {
+              value: input.value,
+              isCorrect: input.value === correctValue,
+              node: opt.cloneNode(true), // an toàn layout
+            };
+          });
+
+          for (let i = optionClones.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [optionClones[i], optionClones[j]] = [
+              optionClones[j],
+              optionClones[i],
+            ];
+          }
+
+          options.forEach((opt) => opt.remove());
+
+          optionClones.forEach((opt) => {
+            q.appendChild(opt.node); // giữ layout .option
+            if (opt.isCorrect) {
+              q.setAttribute("data-correct", opt.value); // cập nhật lại
+            }
+          });
+        });
+      }
+    </script>
+    <script>
+      let countdownInterval;
+      let challengeCompleted = false;
+
+      function startOneMinuteChallenge() {
+        if (
+          confirm(
+            "⏱ Bạn có 120 giây để hoàn thành bài thi. Bạn đã sẵn sàng chưa?"
+          )
+        ) {
+          alert("💨 Bắt đầu đếm ngược 2 phút... Chúc bạn may mắn!");
+          const timerEl = document.getElementById("countdown-timer");
+          const duration = 120 * 1000;
+          const endTime = Date.now() + duration;
+
+          clearInterval(countdownInterval);
+          timerEl.style.display = "block";
+
+          countdownInterval = setInterval(() => {
+            const remaining = endTime - Date.now();
+
+            if (challengeCompleted) {
+              clearInterval(countdownInterval);
+              return;
+            }
+
+            if (remaining <= 0) {
+              clearInterval(countdownInterval);
+              timerEl.textContent = "";
+              timerEl.style.display = "none";
+              alert("⏰ Hết giờ! Trang sẽ được reset lại.");
+              location.reload();
+            } else {
+              const seconds = (remaining / 1000).toFixed(3);
+              timerEl.textContent = `⏳ Thời gian còn lại: ${seconds}s`;
+            }
+          }, 33);
+        }
+      }
+    </script>
+    <script>
+      function checkIfAllPartsCompleted() {
+        const allBlocks = document.querySelectorAll(
+          ".question-block, .sentence-question"
+        );
+        let allAnswered = true;
+        let allCorrect = true;
+
+        allBlocks.forEach((block) => {
+          if (block.classList.contains("sentence-question")) {
+            const dropArea = block.querySelector(".drop-area");
+            const correct = normalizeSentence(
+              block.getAttribute("data-answer")
+            );
+            const userSentence = normalizeSentence(
+              Array.from(dropArea.children)
+                .map((el) => el.textContent.trim())
+                .join(" ")
+            );
+            if (dropArea.children.length === 0 || userSentence !== correct) {
+              allAnswered = false;
+              allCorrect = false;
+            }
+          } else {
+            const input = block.querySelector("input[type='text']");
+            const correct = block
+              .getAttribute("data-correct")
+              .toLowerCase()
+              .split("|")
+              .map((x) => x.trim());
+            if (input) {
+              const value = input.value.trim().toLowerCase();
+              if (!value || !correct.includes(value)) {
+                allAnswered = false;
+                allCorrect = false;
+              }
+            } else {
+              const selected = block.querySelector(
+                "input[type='radio']:checked"
+              );
+              if (
+                !selected ||
+                selected.value !== block.getAttribute("data-correct")
+              ) {
+                allAnswered = false;
+                allCorrect = false;
+              }
+            }
+          }
+        });
+
+        if (allAnswered && allCorrect) {
+          clearInterval(countdownInterval);
+          document.getElementById("countdown-timer").style.display = "none";
+
+          // 👉 Show the popup
+          document.getElementById("completion-popup").style.display = "flex";
+        }
+      }
+    </script>
+    <script>
+      function closeCompletionPopup() {
+        document.getElementById("completion-popup").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
