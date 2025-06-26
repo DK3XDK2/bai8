@@ -10,22 +10,21 @@
         position: fixed;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 10000;
         display: flex;
-        justify-content: center;
         align-items: center;
-        z-index: 9999;
+        justify-content: center;
       }
 
       .popup-content {
-        background: white;
+        background: #ffffff;
         padding: 24px 32px;
-        border-radius: 12px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         text-align: center;
-        max-width: 400px;
-        box-shadow: 0 0 16px rgba(0, 0, 0, 0.2);
       }
 
       .popup-content h2 {
@@ -258,7 +257,7 @@
   <body>
     <div id="completion-popup" style="display: none">
       <div class="popup-content">
-        <h2>🎉 Bạn đã hoàn thành bài thi!</h2>
+        <h2 id="completion-message">🎉 Bạn đã hoàn thành bài thi!</h2>
         <p>Chúc mừng bạn đã trả lời đúng tất cả câu hỏi.</p>
         <button onclick="closeCompletionPopup()">Đóng</button>
       </div>
@@ -1281,8 +1280,6 @@
           >
         </div>
       </div>
-
-      <!-- Add more questions below if needed -->
       <button onclick="checkSentenceOrdering()">Submit Part VI</button>
       <div class="result" id="result-VI"></div>
       <button onclick="resetSentenceOrdering()">Reset Part VI</button>
@@ -1788,7 +1785,6 @@
 
         shuffleQuestions("part-VI", ".sentence-question");
 
-        // Shuffle từng word-bank
         document.querySelectorAll(".word-bank").forEach((bank) => {
           const spans = Array.from(bank.children);
           for (let i = spans.length - 1; i > 0; i--) {
@@ -1797,7 +1793,6 @@
           }
         });
 
-        // Shuffle từng em <em class="shufflable">
         document.querySelectorAll("em.shufflable").forEach((el) => {
           const parts = el.textContent
             .split("/")
@@ -1812,7 +1807,6 @@
           el.innerHTML = parts.join(" / ");
         });
 
-        // ✅ Gán lại data-group cho từng <span> trong word-bank
         document.querySelectorAll(".sentence-question").forEach((block) => {
           const group = block.getAttribute("data-group");
           const spans = block.querySelectorAll(".word-bank span");
@@ -1820,51 +1814,16 @@
             span.setAttribute("data-group", group);
           });
         });
-      });
-    </script>
-    <script>
-      function shuffleOptionsInQuestions(containerId) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
 
-        const questions = container.querySelectorAll(".question-block");
-
-        questions.forEach((q) => {
-          const correctValue = q.getAttribute("data-correct");
-
-          const options = Array.from(q.querySelectorAll(".option"));
-
-          const optionClones = options.map((opt) => {
-            const input = opt.querySelector("input");
-            return {
-              value: input.value,
-              isCorrect: input.value === correctValue,
-              node: opt.cloneNode(true), // an toàn layout
-            };
-          });
-
-          for (let i = optionClones.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [optionClones[i], optionClones[j]] = [
-              optionClones[j],
-              optionClones[i],
-            ];
-          }
-
-          options.forEach((opt) => opt.remove());
-
-          optionClones.forEach((opt) => {
-            q.appendChild(opt.node); // giữ layout .option
-            if (opt.isCorrect) {
-              q.setAttribute("data-correct", opt.value); // cập nhật lại
-            }
-          });
+        document.querySelectorAll("input[type='text']").forEach((input) => {
+          input.setAttribute("autocomplete", "off");
         });
-      }
+      });
     </script>
     <script>
       let countdownInterval;
       let isChallengeStarted = false;
+      let challengeStartTime = null; //
 
       function startOneMinuteChallenge() {
         if (isChallengeStarted) {
@@ -1878,8 +1837,8 @@
           )
         ) {
           isChallengeStarted = true;
+          challengeStartTime = Date.now();
 
-          // ✅ Vô hiệu hóa nút sau khi bắt đầu thử thách
           document.querySelector(
             "button[onclick='startOneMinuteChallenge()']"
           ).disabled = true;
@@ -1909,6 +1868,7 @@
         }
       }
     </script>
+
     <script>
       function checkIfAllPartsCompleted() {
         const allBlocks = document.querySelectorAll(
@@ -1964,11 +1924,21 @@
           clearInterval(countdownInterval);
           document.getElementById("countdown-timer").style.display = "none";
 
-          // 👉 Show the popup
+          if (challengeStartTime) {
+            const timeTaken = (
+              (Date.now() - challengeStartTime) /
+              1000
+            ).toFixed(2);
+            const message = `🎉 Bạn đã hoàn thành bài thi sau ${timeTaken} giây!`;
+            const messageEl = document.getElementById("completion-message");
+            if (messageEl) messageEl.innerText = message;
+          }
+
           document.getElementById("completion-popup").style.display = "flex";
         }
       }
     </script>
+
     <script>
       function closeCompletionPopup() {
         document.getElementById("completion-popup").style.display = "none";
