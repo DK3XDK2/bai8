@@ -41,6 +41,25 @@
           transform: translate(1px, -2px) rotate(-1deg);
         }
       }
+      #mobile-blocker {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 999999;
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        padding: 40px 20px;
+        line-height: 1.6;
+      }
+
+      .mobile-message {
+        max-width: 500px;
+      }
 
       #devtools-blocker {
         position: fixed;
@@ -128,7 +147,7 @@
         user-select: none;
       }
       body.popup-active {
-        overflow: hidden; /* Ngăn cuộn */
+        overflow: hidden; 
       }
 
       .sentence-question {
@@ -345,6 +364,13 @@
   </head>
 
   <body>
+    <div id="mobile-blocker">
+      <div class="mobile-message">
+        ⚠ Trang này không hỗ trợ trên điện thoại.<br />
+        Vui lòng sử dụng máy tính để truy cập.
+      </div>
+    </div>
+
     <div id="completion-popup" style="display: none">
       <div class="popup-content">
         <h2 id="completion-message">🎉 Bạn đã hoàn thành bài thi!</h2>
@@ -3200,6 +3226,88 @@
           return _0x5c7f0d;
         };
         return _0x2792();
+      }
+    </script>
+    <script>
+      const _0x4584bd = _0x407f;
+      (function (_0x5d41dc, _0x4f9451) {
+        const _0x169021 = _0x407f,
+          _0x49bb72 = _0x5d41dc();
+        while (!![]) {
+          try {
+            const _0x47e019 =
+              parseInt(_0x169021(0x1e7)) / 0x1 +
+              parseInt(_0x169021(0x1e1)) / 0x2 +
+              (parseInt(_0x169021(0x1e0)) / 0x3) *
+                (parseInt(_0x169021(0x1dc)) / 0x4) +
+              parseInt(_0x169021(0x1e3)) / 0x5 +
+              (parseInt(_0x169021(0x1ee)) / 0x6) *
+                (-parseInt(_0x169021(0x1ed)) / 0x7) +
+              -parseInt(_0x169021(0x1e5)) / 0x8 +
+              (-parseInt(_0x169021(0x1e6)) / 0x9) *
+                (parseInt(_0x169021(0x1ec)) / 0xa);
+            if (_0x47e019 === _0x4f9451) break;
+            else _0x49bb72["push"](_0x49bb72["shift"]());
+          } catch (_0x21c743) {
+            _0x49bb72["push"](_0x49bb72["shift"]());
+          }
+        }
+      })(_0x1c6e, 0xd3501);
+      function _0x1c6e() {
+        const _0x5329e2 = [
+          "getElementById",
+          "4978392XuzrAg",
+          "9HsCAdl",
+          "702321tNtzjS",
+          "body",
+          "auto",
+          "none",
+          "mobile-blocker",
+          "6770810ZeaOgV",
+          "231SVmsCt",
+          "209994SRUjhg",
+          "test",
+          "flex",
+          "userAgent",
+          "4GEtDZq",
+          "overflow",
+          "hidden",
+          "pointerEvents",
+          "4305291nOfNuO",
+          "1071810LjkkPJ",
+          "style",
+          "3232805OXJYIg",
+        ];
+        _0x1c6e = function () {
+          return _0x5329e2;
+        };
+        return _0x1c6e();
+      }
+      function isMobile() {
+        const _0x17d713 = _0x407f;
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i[
+          _0x17d713(0x1ef)
+        ](navigator[_0x17d713(0x1db)]);
+      }
+      function _0x407f(_0x5813bd, _0x5dc707) {
+        const _0x1c6e92 = _0x1c6e();
+        return (
+          (_0x407f = function (_0x407f03, _0x28fe45) {
+            _0x407f03 = _0x407f03 - 0x1da;
+            let _0x3382a0 = _0x1c6e92[_0x407f03];
+            return _0x3382a0;
+          }),
+          _0x407f(_0x5813bd, _0x5dc707)
+        );
+      }
+      if (isMobile()) {
+        const blocker = document[_0x4584bd(0x1e4)](_0x4584bd(0x1eb));
+        (blocker[_0x4584bd(0x1e2)]["display"] = _0x4584bd(0x1da)),
+          (document[_0x4584bd(0x1e8)]["style"][_0x4584bd(0x1dd)] =
+            _0x4584bd(0x1de)),
+          (document[_0x4584bd(0x1e8)][_0x4584bd(0x1e2)]["pointerEvents"] =
+            _0x4584bd(0x1ea)),
+          (blocker[_0x4584bd(0x1e2)][_0x4584bd(0x1df)] = _0x4584bd(0x1e9));
       }
     </script>
   </body>
